@@ -32,6 +32,7 @@ export class IncidentController {
         description: req.body.description,
         isResolved: req.body.isResolved
       };
+
       this.incidentService.createIncident(
         incident_params,
         (err: any, incident_data: IIncident) => {
@@ -51,7 +52,7 @@ export class IncidentController {
   public getAll(req: Request, res: Response) {
     if (req) {
       this.incidentService.getAllIncidents(
-        null,
+        req.query,
         (err: any, incidents: IIncident[]) => {
           if (err) {
             mongoError(err, res);
@@ -96,14 +97,12 @@ export class IncidentController {
       req.body.isResolved
     ) {
       const incident_filter = { _id: req.params.id };
-      console.log("incident_filter", incident_filter);
       this.incidentService.getIncident(
         incident_filter,
         (err: any, incident_data: IIncident) => {
           if (err) {
             mongoError(err, res);
           } else if (incident_data) {
-            console.log("incident_data", incident_data)
             const incident_params: IIncident = {
               _id: incident_filter._id,
               deadline: req.body.deadline
@@ -139,7 +138,7 @@ export class IncidentController {
             };
 
             this.incidentService.updateIncident(incident_params, (err: any) => {
-              console.log(err)
+              console.log(err);
               if (err) {
                 mongoError(err, res);
               } else {
