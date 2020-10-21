@@ -1,5 +1,3 @@
-import { ModificationNote } from "../common/model";
-
 export interface IUser {
     _id?: String;
     role: "Service Desk employee" | "Regular employee";
