@@ -13,8 +13,8 @@ import AppBar from "./components/appbar/AppBar";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppBar />
     <Router>
+      <AppBar />
       <Switch>
         <Route path="/create-user">
           <CreateUser />

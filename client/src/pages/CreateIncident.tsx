@@ -1,6 +1,16 @@
 import React from "react";
-import { Button, MenuItem, TextField } from "@material-ui/core";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Container,
+  MenuItem,
+  TextField as MUITextfield,
+  Snackbar
+} from "@material-ui/core";
 import axios from "axios";
+import styled from "styled-components";
 
 interface ICreateIncident {}
 
@@ -70,13 +80,35 @@ function addMonths(numberOfMonths: number) {
   return date.setMonth(date.getMonth() + numberOfMonths);
 }
 
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-end;
+  width: 47%;
+  margin-top: 28px;
+`;
+
+const TextField = styled(MUITextfield)`
+  margin-bottom: 24px;
+`;
+
 export function CreateIncident(props: ICreateIncident) {
   const [subject, setSubject] = React.useState("");
   const [incidentType, setIncidentType] = React.useState("Software");
+  const [users, setUsers] = React.useState([{label: '', value: ''}])
   const [user, setUser] = React.useState("Juan");
   const [priority, setPriority] = React.useState("Normal");
   const [deadline, setDeadline] = React.useState("7");
   const [description, setDescription] = React.useState("");
+  const [success, setSuccess] = React.useState(false);
+  const [failure, setFailure] = React.useState(false);
+  const [formIsValid, setFormIsValid] = React.useState(false);
 
   const handleChangeSubject = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSubject(event.target.value);
@@ -119,107 +151,169 @@ export function CreateIncident(props: ICreateIncident) {
     axios
       .post(`http://localhost:8080/api/incident`, requestBody)
       .then(res => {
-        console.log(res.data.data);
+        setSuccess(true);
       })
       .catch(e => {
-        console.log(e);
+        setFailure(true);
       });
   }
 
+  function getUsers(): void{
+    axios
+        .get(`http://localhost:8080/api/user/all`)
+        .then(res => {
+          console.log(res.data)
+          const users: {label: string, value: string}[] = []
+          res.data.data.map((user: any) => {
+            users.push({
+              label: user.firstName + ' ' + user.lastName,
+              value: user._id
+            })
+          })
+          setUsers(users)
+        })
+        .catch(e => {
+          console.log(e);
+        });
+  }
+
+  React.useEffect(() => {
+      getUsers()
+  }, []);
+
+  React.useEffect(() => {
+      setFormIsValid(validateForm());
+  }, [subject, incidentType, user, priority, deadline]);
+
+  function validateForm(): boolean {
+    console.log("subject", subject)
+    return (subject &&
+      incidentType &&
+      user &&
+      priority &&
+      deadline) ? true : false;
+  }
+
+  console.log("render")
   return (
-    <>
-      <form autoComplete="on">
-        {/* SUBJECT */}
-        <TextField required id="subject" label="Subject" value={subject} onChange={handleChangeSubject} />
-
-        {/* TYPE OF INCIDENT*/}
-        <TextField
-          id="type"
-          select
-          required
-          label="Type of incident"
-          value={incidentType}
-          onChange={handleChangeIncident}
-          helperText="Please select your currency"
-        >
-          {incidentTypes.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-
-        {/* REPORTED BY USER*/}
-        <TextField
-          id="user"
-          select
-          required
-          label="Reported by user"
-          value={user}
-          onChange={handleChangeUser}
-        >
-          {users.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-
-        {/* PRIORITY*/}
-        <TextField
-          id="priority"
-          select
-          required
-          label="Priority"
-          value={priority}
-          onChange={handleChangePriority}
-        >
-          {priorities.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-
-        {/* DEADLINE*/}
-        <TextField
-          id="deadline"
-          select
-          required
-          label="Deadline"
-          value={deadline}
-          onChange={handleChangeDeadline}
-        >
-          {deadlines.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-
-        {/* DESCRIPTION*/}
-        <TextField
-          id="description"
-          required
-          label="Description"
-          multiline
-          rows={6}
-          value={description}
-          onChange={handleChangeDescription}
+    <Container maxWidth="sm" style={{ marginTop: "96px" }}>
+      <Card>
+        <CardHeader
+          title="Create a new incident"
+          subheader="Fill in all the required incident details"
         />
-        <Button color="secondary" variant="outlined" onClick={() => window.history.back()}>
-          CANCEL
-        </Button>
+        <CardContent>
+          <Form autoComplete="on">
+            {/* SUBJECT */}
+            <TextField
+              required
+              id="subject"
+              label="Subject"
+              value={subject}
+              onChange={handleChangeSubject}
+            />
 
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => onSubmit()}
-          disableElevation
-        >
-          SUBMIT TICKET
-        </Button>
-      </form>
-    </>
+            {/* TYPE OF INCIDENT*/}
+            <TextField
+              id="type"
+              select
+              required
+              label="Type of incident"
+              value={incidentType}
+              onChange={handleChangeIncident}
+            >
+              {incidentTypes.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            {/* REPORTED BY USER*/}
+            <TextField
+              id="user"
+              select
+              required
+              label="Reported by user"
+              value={user}
+              onChange={handleChangeUser}
+            >
+              {users.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            {/* PRIORITY*/}
+            <TextField
+              id="priority"
+              select
+              required
+              label="Priority"
+              value={priority}
+              onChange={handleChangePriority}
+            >
+              {priorities.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            {/* DEADLINE*/}
+            <TextField
+              id="deadline"
+              select
+              required
+              label="Deadline"
+              value={deadline}
+              onChange={handleChangeDeadline}
+            >
+              {deadlines.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            {/* DESCRIPTION*/}
+            <TextField
+              id="description"
+              label="Description"
+              multiline
+              rows={6}
+              value={description}
+              onChange={handleChangeDescription}
+              variant="outlined"
+            />
+            <ButtonContainer>
+              <Button
+                color="secondary"
+                variant="outlined"
+                onClick={() => window.history.back()}
+              >
+                CANCEL
+              </Button>
+
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => onSubmit()}
+                disabled={!formIsValid}
+                disableElevation
+              >
+                SUBMIT TICKET
+              </Button>
+            </ButtonContainer>
+          </Form>
+        </CardContent>
+        <Snackbar open={success} message="Incident creation successful" />
+        <Snackbar
+          open={failure}
+          message="Incident creation failed, please try again"
+        />
+      </Card>
+    </Container>
   );
 }

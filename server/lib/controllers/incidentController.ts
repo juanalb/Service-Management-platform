@@ -50,6 +50,10 @@ export class IncidentController {
   }
 
   public getAll(req: Request, res: Response) {
+    if(req.query.beforeDate){
+      req.query.deadline = { $lt: req.query.beforeDate}
+      delete req.query.beforeDate
+    }
     if (req) {
       this.incidentService.getAllIncidents(
         req.query,

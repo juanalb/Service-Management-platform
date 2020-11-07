@@ -5,15 +5,16 @@ import {
   Tab,
   Typography,
   Button,
-  Box
+  Box,
+  Grid
 } from "@material-ui/core";
 import DataTable from "../datatable/DataTable";
 import styled from "styled-components";
 import { incidentColumns, userColumns } from "../datatable/DataTable-constants";
 import axios from "axios";
 import AddIcon from "@material-ui/icons/Add";
-import CircularStatic from "../circularprogress/CircularProgress";
 import { Link } from "react-router-dom";
+import { CircularCard } from "../circularprogress/CircularProgress";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -89,7 +90,25 @@ export default function SimpleTabs() {
 
       <TabPanel value={value} index={0}>
         <Container maxWidth="lg">
-          <CircularStatic />
+          <Grid container spacing={4}>
+            <Grid item xs={6}>
+              <CircularCard
+                title="Unresolved incidents"
+                subtitle="All tickets currently open"
+                total={0}
+                value={0}
+                unResolved={0}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <CircularCard
+                title="Incidents past deadline"
+                subtitle="These tickets need your immediate attention"
+                total={0}
+                value={0}
+              />
+            </Grid>
+          </Grid>
         </Container>
       </TabPanel>
 
