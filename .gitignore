@@ -2,6 +2,12 @@
 .env
 server/.env
 client/.env
+client/build
+client/yarn.lock
+server/dist
+server/build
+.idea/
+Procfile
 
 # Logs
 logs
