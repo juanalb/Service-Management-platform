@@ -31,6 +31,7 @@ export class UserController {
         role: req.body.role
       };
       this.userService.createUser(user_params, (err: any, user_data: IUser) => {
+
         if (err) {
           mongoError(err, res);
         } else {
@@ -49,6 +50,11 @@ export class UserController {
         if (err) {
           mongoError(err, res);
         } else {
+          // const data: IUser = [];
+          // users.map((user) =>{
+          //
+          // })
+          // users.map(())
           successResponse("get users successfull", users, res);
         }
       });

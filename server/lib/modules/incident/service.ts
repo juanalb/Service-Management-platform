@@ -8,7 +8,6 @@ export default class IncidentService {
   }
 
   public getAllIncidents(query: any, callback: any) {
-    // console.log("incident_params", query);
     incident.find(query, callback);
   }
 

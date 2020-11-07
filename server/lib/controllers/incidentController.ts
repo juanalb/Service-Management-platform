@@ -131,18 +131,9 @@ export class IncidentController {
                 ? req.body.subject
                 : incident_data.subject,
               type: req.body.type ? req.body.type : incident_data.type
-              // _id: incident_filter._id,
-              // email: req.body.email ? req.body.email : incident_data.email,
-              // firstName: req.body.firstName ? req.body.firstName : incident_data.firstName,
-              // lastName: req.body.lastName ? req.body.lastName : incident_data.lastName,
-              // location: req.body.location ? req.body.location : incident_data.location,
-              // password: req.body.phoneNumber ? req.body.phoneNumber : incident_data.phoneNumber,
-              // phoneNumber: req.body.password ? req.body.password : incident_data.password,
-              // role: req.body.role ? req.body.role : incident_data.role
             };
 
             this.incidentService.updateIncident(incident_params, (err: any) => {
-              console.log(err);
               if (err) {
                 mongoError(err, res);
               } else {
