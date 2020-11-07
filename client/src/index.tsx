@@ -2,34 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import DataTable from "./components/datatable/DataTable";
-import SimpleTabs from "./components/appbar/AppBar";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { CreateUser } from "./pages/CreateUser";
-import { CreateIncident } from "./pages/CreateIncident";
-import { Login } from "./pages/Login";
-import { Landing } from "./pages/Landing";
-import AppBar from "./components/appbar/AppBar";
+import {App} from "./App";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <AppBar />
-      <Switch>
-        <Route path="/create-user">
-          <CreateUser />
-        </Route>
-        <Route path="/create-incident">
-          <CreateIncident />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/">
-          <Landing />
-        </Route>
-      </Switch>
-    </Router>
+      <App/>
   </React.StrictMode>,
   document.getElementById("root")
 );
