@@ -1,22 +1,19 @@
 import React, { useState } from "react";
 import {
   Container,
-  Tabs as MUITabs,
-  Typography,
   Button,
-  Box,
 } from "@material-ui/core";
 import DataTable from "../datatable/DataTable";
-import { incidentColumns, userColumns } from "../datatable/DataTable-constants";
+import { incidentColumns } from "../datatable/DataTable-constants";
 import axios from "axios";
 import AddIcon from "@material-ui/icons/Add";
 import { Link } from "react-router-dom";
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}
+// interface TabPanelProps {
+//   children?: React.ReactNode;
+//   index: any;
+//   value: any;
+// }
 
 export default function IncidentManagement() {
   const [incidents, setIncidents] = useState([]);

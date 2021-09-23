@@ -4,7 +4,6 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import styled from "styled-components";
 import { Card, CardContent as MUICardContent, CardHeader } from "@material-ui/core";
-import axios from "axios";
 
 interface ICircularCard {
   title: string;
@@ -25,7 +24,7 @@ const CircularProgress = styled(MUICircularProgress)`
   color: ${(props: ICircularCard) => props.unResolved ? "" : "#f50057"};
 `;
 
-export function CircularCard(props: ICircularCard) {;
+export function CircularCard(props: ICircularCard) {
   return (
     <Card>
       <CardHeader

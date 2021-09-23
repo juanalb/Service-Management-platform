@@ -1,11 +1,14 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { CommonRoutes } from "./routes/common_routes";
+import cookieParser from 'cookie-parser';
 import mongoose from "mongoose";
-import { UserRoutes } from "./routes/userRoutes";
-import { IncidentRoutes } from "./routes/incidentController";
 import cors from "cors";
 import * as path from "path";
+import helmet from 'helmet';
+import { UserRoutes } from "./routes/userRoutes";
+import { IncidentRoutes } from "./routes/incidentController";
+import { CommonRoutes } from "./routes/common_routes";
+
 require("dotenv").config();
 
 class App {
@@ -29,7 +32,9 @@ class App {
     this.app.use(express.static(buildPath));
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
-    this.app.use(cors());
+    this.app.use(cors({credentials: true, origin: process.env.CLIENT_URL}));
+    this.app.use(helmet());
+    this.app.use(cookieParser());
   }
 
   private mongoSetup(): void {

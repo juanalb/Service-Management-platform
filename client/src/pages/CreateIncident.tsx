@@ -29,12 +29,12 @@ const incidentTypes = [
   }
 ];
 
-const users = [
-  {
-    value: "5f8cc5cae2c69f3a1c7cf99c",
-    label: "Juan Albergen"
-  }
-];
+// const users = [
+//   {
+//     value: "5f8cc5cae2c69f3a1c7cf99c",
+//     label: "Juan Albergen"
+//   }
+// ];
 
 const priorities = [
   {
@@ -162,9 +162,8 @@ export function CreateIncident(props: ICreateIncident) {
     axios
         .get(`http://localhost:8080/api/user/all`)
         .then(res => {
-          console.log(res.data)
           const users: {label: string, value: string}[] = []
-          res.data.data.map((user: any) => {
+          res.data.data.forEach((user: any) => {
             users.push({
               label: user.firstName + ' ' + user.lastName,
               value: user._id
@@ -186,7 +185,6 @@ export function CreateIncident(props: ICreateIncident) {
   }, [subject, incidentType, user, priority, deadline]);
 
   function validateForm(): boolean {
-    console.log("subject", subject)
     return (subject &&
       incidentType &&
       user &&
@@ -194,7 +192,6 @@ export function CreateIncident(props: ICreateIncident) {
       deadline) ? true : false;
   }
 
-  console.log("render")
   return (
     <Container maxWidth="sm" style={{ marginTop: "96px" }}>
       <Card>

@@ -11,8 +11,6 @@ export function getAllUnsresolvedIncidents() {
 }
 
 export function getIncidentsPastDeadline() {
-    // const date = new Date()
-    // date.toISOString()
     return axios.get("http://localhost:8080/api/incident/all", {
         params: { beforeDate: new Date(), isResolved: false }
     });
