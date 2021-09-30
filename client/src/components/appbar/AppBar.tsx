@@ -6,7 +6,7 @@ import styled from "styled-components";
 import {Link} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {useHistory} from "react-router-dom";
-import {logout} from "../../api/UserAPI";
+import {userAPI} from "../../api/UserAPI";
 
 const Toolbar = styled(MUIToolbar)`
   justify-content: space-between;
@@ -17,7 +17,7 @@ export default function AppBar() {
     const history = useHistory();
 
     function handleLogoutClick() {
-        logout()
+        userAPI.logout()
         authContext.setContextLogout();
         history.push("/login")
     }

@@ -1,6 +1,7 @@
 import { Application, Request, Response } from "express";
 import { UserController } from "../controllers/userController";
 import { auth } from "../auth/auth";
+import {response_status_codes} from "../modules/common/model";
 
 export class UserRoutes {
   private userController: UserController = new UserController();
@@ -16,6 +17,15 @@ export class UserRoutes {
 
     app.post("/api/user", auth, (req: Request, res: Response) => {
       this.userController.create(req, res);
+    });
+
+    app.post("/api/user/auth", auth, (req: Request, res: Response) => {
+      res.status(200).send({
+        isAuth: true,
+        userId: req["user"]._id,
+        message: "authorized",
+        status: response_status_codes.success
+      })
     });
 
     app.get("/api/user/all", auth, (req: Request, res: Response) => {

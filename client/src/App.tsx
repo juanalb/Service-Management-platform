@@ -1,26 +1,28 @@
 import React, {useCallback, useState} from "react";
-import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
 import AppBar from "./components/appbar/AppBar";
-import {CreateUser} from "./pages/CreateUser";
-import {CreateIncident} from "./pages/CreateIncident";
-import {Login} from "./pages/Login";
-import {Landing} from "./pages/Landing";
 import { AuthContext } from "./context/AuthContext";
 import axios from "axios";
+import { Routes } from "./Routes";
+import { userAPI } from "./api/UserAPI";
 
 export function App() {
-    const userLocalStorageDefault = '{"isAuth":false, "id":null}';
-    const [auth, setAuth] = useState(JSON.parse(localStorage.getItem("user") || userLocalStorageDefault).isAuth);
-    const [userId, setUserId] = useState(JSON.parse(localStorage.getItem("user") || userLocalStorageDefault).id);
+    const [auth, setAuth] = useState(false);
+    const [userId, setUserId] = useState<string>("");
+
+    React.useEffect(() => {
+        userAPI.isAuthenticated().then((res) => {
+            setAuth(res.data.isAuth)
+            setUserId(res.data.userId)
+        })
+    }, []);
 
     const setContextLogin = useCallback((userId, token, expirationDate) => {
-        const tokenExpirationDate = expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
-        localStorage.setItem(
+        sessionStorage.setItem(
             'user',
             JSON.stringify({
                 id: userId,
                 isAuth: true,
-                expiration: tokenExpirationDate.toISOString()
             })
         );
 
@@ -32,8 +34,8 @@ export function App() {
 
     const setContextLogout = useCallback(() => {
         setAuth(false)
-        setUserId(null);
-        localStorage.removeItem('user');
+        setUserId("");
+        sessionStorage.removeItem('user');
         axios.defaults.headers.common['Authorization'] = `Bearer `;
         axios.defaults.headers.common['x-access-token'] = ``;
     }, []);
@@ -48,21 +50,8 @@ export function App() {
             }}
         >
             <Router>
-                <AppBar/>
-                <Switch>
-                    <Route path="/login">
-                        {auth ? <Redirect to="/" /> : <Login />}
-                    </Route>
-                    <Route path="/">
-                        {auth ? <Landing /> : <Redirect to="/login" />}
-                    </Route>
-                    <Route path="/create-user">
-                        {auth ? <CreateUser/> : <Redirect to="/login" />}
-                    </Route>
-                    <Route path="/create-incident">
-                        {auth ? <CreateIncident/> : <Redirect to="/login" />}
-                    </Route>
-                </Switch>
+                <AppBar />
+                <Routes />
             </Router>
         </AuthContext.Provider>
     );

@@ -9,7 +9,7 @@ import {
     TextField as MUITextfield
 } from "@material-ui/core";
 import styled from "styled-components";
-import {login} from "../api/UserAPI";
+import {userAPI} from "../api/UserAPI";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import {SeverityTypes} from "../components/snackbar/Snackbar";
 import {AuthContext} from "../context/AuthContext";
@@ -59,7 +59,7 @@ export function Login() {
     };
 
     function onSubmit(event?: React.FormEvent<HTMLFormElement>) {
-        login(email, password).then(res => {
+        userAPI.login(email, password, rememberUser).then(res => {
             if (!res.data) {
                 setSnackbar({
                     open: true,

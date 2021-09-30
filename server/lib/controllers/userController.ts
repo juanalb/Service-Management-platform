@@ -61,13 +61,16 @@ export class UserController {
 
     public login(req: Request, res: Response) {
         const token = req.cookies.token;
+        const rememberUser = req.body.rememberUser;
 
         this.userService.findByToken(token, (err, user) => {
             if (err) return mongoError(err, res);
             if (user) {
                 return res.json({
                     isAuth: false,
-                    message: "You are already logged in"
+                    message: "You are already logged in",
+                    token: user.token,
+                    userId: user._id,
                 });
             } else {
                 this.userService.getUser({email: req.body.email}, function (
@@ -96,7 +99,7 @@ export class UserController {
                                     sameSite: 'strict',
                                     httpOnly: true,
                                     secure: process.env.NODE_ENV !== "development",
-                                    expires: new Date(new Date().getTime() + 3600 * 1000)
+                                    expires: rememberUser ? new Date(new Date().getTime() + 3600 * 1000) : null
                                 }).send({
                                     isAuth: true,
                                     userId: user._id,
