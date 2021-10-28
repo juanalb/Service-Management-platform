@@ -22,9 +22,26 @@ export default class UserService {
         users.findByToken(token, callback)
     }
 
+    public findByEmail(email: string, callback: any){
+        const query = { email };
+        users.findOne(query, callback)
+    }
+
     public updateUser(user_params: IUser, callback: any) {
         const query = { _id: user_params._id };
-        users.findOneAndUpdate(query, user_params, callback);
+        users.findOneAndUpdate(query, user_params, {}, callback);
+    }
+
+    // According to documentation, update(), findOneAndUpdate() etc. do not call save(),
+    // therefore or pre() function is not called
+    public updateUserWithPreSave(user_params: IUser, callback: any) {
+        const _session = new users(user_params);
+        _session.save(callback);
+    }
+
+    public findByIdAndUpdate(user_params: IUser, callback: any) {
+        const query = { _id: user_params._id };
+        users.findByIdAndUpdate(query, user_params, {}, callback)
     }
 
     public deleteUser(_id: String, callback: any) {

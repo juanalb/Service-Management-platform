@@ -9,4 +9,3 @@ export enum Role {
     SERVICE_DESK = "Service Desk employee",
     REGULAR = "Regular employee"
 }
-

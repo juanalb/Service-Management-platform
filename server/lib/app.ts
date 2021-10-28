@@ -6,16 +6,18 @@ import cors from "cors";
 import * as path from "path";
 import helmet from 'helmet';
 import { UserRoutes } from "./routes/userRoutes";
-import { IncidentRoutes } from "./routes/incidentController";
-import { CommonRoutes } from "./routes/common_routes";
+import { IncidentRoutes } from "./routes/incidentRoutes";
+import { CommonRoutes } from "./routes/commonRoutes";
+import { PasswordRoutes } from "./routes/passwordRoutes";
 
 require("dotenv").config();
 
 class App {
   public app: express.Application;
-  private common_routes: CommonRoutes = new CommonRoutes();
+  private commonRoutes: CommonRoutes = new CommonRoutes();
   private userRoutes: UserRoutes = new UserRoutes();
   private incidentRoutes: IncidentRoutes = new IncidentRoutes();
+  private passwordRoutes: PasswordRoutes = new PasswordRoutes();
   private mongoUrl: string = process.env.MONGO_CONNECTION_STRING;
 
   constructor() {
@@ -24,7 +26,10 @@ class App {
     this.mongoSetup();
     this.userRoutes.route(this.app);
     this.incidentRoutes.route(this.app);
-    this.common_routes.route(this.app);
+    this.passwordRoutes.route(this.app);
+
+    // Keep this route as last
+    this.commonRoutes.route(this.app);
   }
 
   private config(): void {

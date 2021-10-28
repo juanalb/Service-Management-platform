@@ -2,15 +2,17 @@ import { Role } from "./enums";
 import { Building } from "./enums";
 
 export interface IUser {
-  _id?: String;
+  _id?: string;
   role: Role;
-  firstName: String;
-  lastName: String;
-  phoneNumber: String;
-  email: String;
-  password: String;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  password: string;
   building: Building;
-  token: String;
+  token?: string;
+  resetPasswordToken?: string,
+  resetPasswordExpires?: Date
 }
 
 export interface IUserDocument extends IUser, Document{

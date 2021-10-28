@@ -19,15 +19,6 @@ export class UserRoutes {
       this.userController.create(req, res);
     });
 
-    app.post("/api/user/auth", auth, (req: Request, res: Response) => {
-      res.status(200).send({
-        isAuth: true,
-        userId: req["user"]._id,
-        message: "authorized",
-        status: response_status_codes.success
-      })
-    });
-
     app.get("/api/user/all", auth, (req: Request, res: Response) => {
       this.userController.getAll(req, res);
     });
@@ -42,6 +33,15 @@ export class UserRoutes {
 
     app.delete("/api/user/:id", auth,(req: Request, res: Response) => {
       this.userController.delete(req, res);
+    });
+
+    app.post("/api/user/auth", auth, (req: Request, res: Response) => {
+      res.status(200).send({
+        isAuth: true,
+        userId: req["user"]._id,
+        message: "authorized",
+        status: response_status_codes.success
+      })
     });
   }
 }

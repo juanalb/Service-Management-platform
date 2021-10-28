@@ -3,7 +3,6 @@ import { Role } from "./enums";
 import { Building } from "./enums";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import {IUser, IUserDocument} from "./model";
 
 const SALT_WORK_FACTOR = 10;
 
@@ -24,7 +23,9 @@ const userSchema = new mongoose.Schema({
     enum: Object.values(Building),
     default: Building.AMSTERDAM
   },
-  token: String
+  token: String,
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 });
 
 userSchema.set("toJSON", {
@@ -38,6 +39,7 @@ userSchema.virtual("fullName").get(function() {
 userSchema.pre("save", async function save(next) {
   const user = this;
   if (!this.isModified("password")) return next();
+
   try {
     const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
     //@ts-ignore
@@ -90,6 +92,18 @@ userSchema.statics.findByToken = function(token, callback) {
         callback(null, user);
       });
     });
+  }
+};
+
+userSchema.statics.findByEmail = function(email, callback) {
+  const user = this;
+  if (email === null || email === " "){
+    callback(null, null)
+  }else{
+      user.findOne({ email }, function(error, user) {
+        if (error) return callback(error);
+        callback(null, user);
+      });
   }
 };
 

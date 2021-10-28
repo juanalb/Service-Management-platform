@@ -29,18 +29,39 @@ export class UserController {
                 building: req.body.building,
                 password: req.body.password,
                 phoneNumber: req.body.phoneNumber,
-                role: req.body.role,
-                token: ""
+                role: req.body.role
             };
-            this.userService.createUser(user_params, (err: any, user_data: IUser) => {
+
+            this.userService.findByEmail(user_params.email, (err: any, user: IUser) => {
+                if(user){
+                    return mongoError(err, res, "User with email already exists");
+                }
+
+                this.userService.createUser(user_params, (err: any, user_data: IUser) => {
+                    if (err) {
+                        mongoError(err, res);
+                    } else {
+                        successResponse("create user successful", user_data, res);
+                    }
+                });
+            })
+        } else {
+            // error response if some fields are missing in request body
+            insufficientParameters(res);
+        }
+    }
+
+    //TODO: implement sign-up call, for now use the creat call
+    public signUp(req: Request, res: Response) {
+        if (req) {
+            this.userService.getAllUsers(null, (err: any, users: IUser[]) => {
                 if (err) {
                     mongoError(err, res);
                 } else {
-                    successResponse("create user successfull", user_data, res);
+                    successResponse("get users successfull", users, res);
                 }
             });
         } else {
-            // error response if some fields are missing in request body
             insufficientParameters(res);
         }
     }
@@ -212,8 +233,11 @@ export class UserController {
                             ? req.body.password
                             : user_data.password,
                         role: req.body.role ? req.body.role : user_data.role,
-                        token: req.body.token
+                        token: req.body.token,
+                        resetPasswordToken: req.body.resetPasswordToken ? req.body.resetPasswordToken : user_data.resetPasswordToken,
+                        resetPasswordExpires: req.body.resetPasswordExpires ? req.body.resetPasswordExpires : user_data.resetPasswordExpires
                     };
+                    // This might be broken,
                     this.userService.updateUser(user_params, (err: any) => {
                         if (err) {
                             mongoError(err, res);
