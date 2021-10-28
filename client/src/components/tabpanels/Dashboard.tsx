@@ -5,7 +5,7 @@ import {
 } from "@material-ui/core";
 import { CircularCard } from "../circularprogress/CircularProgress";
 import axios from "axios";
-import {getAllIncidents, getAllUnsresolvedIncidents, getIncidentsPastDeadline} from "../../api/IncidentAPI";
+import { incidentAPI } from "../../api/IncidentAPI";
 
 export default function Dashboard() {
     const [progress, setProgress] = React.useState(0);
@@ -14,8 +14,9 @@ export default function Dashboard() {
     const [incidentsPastDeadline, setIncidentsPastDeadline] = React.useState(0);
 
     React.useEffect(() => {
-        axios.all([getAllIncidents(), getAllUnsresolvedIncidents(), getIncidentsPastDeadline()]).then(
+        axios.all([incidentAPI.getAllIncidents(), incidentAPI.getAllUnsresolvedIncidents(), incidentAPI.getIncidentsPastDeadline()]).then(
             axios.spread(function(incidentResponse, unResolvedResponse, pastDeadlineResponse) {
+                console.log(incidentResponse)
                 setTotal(incidentResponse.data.data.length);
                 setUnResolved(unResolvedResponse.data.data.length);
                 setIncidentsPastDeadline(pastDeadlineResponse.data.data.length);

@@ -13,9 +13,6 @@ export class PasswordController {
 
     private isExpired(expirationDate: Date){
         const currentDate = new Date();
-        console.log("currentDate", currentDate)
-        console.log("expirationDate", expirationDate)
-        console.log("isExpired", currentDate >= expirationDate)
         return currentDate >= expirationDate
     }
 
@@ -30,10 +27,7 @@ export class PasswordController {
             if (err) return mongoError(err, res);
             if (user) {
                 // Check if token already exists - return a message
-                console.log("user", user)
                 if(user.resetPasswordToken){
-                    console.log("this", this)
-
                     if(!this.isExpired(user.resetPasswordExpires)){
                         const message = `We were already making a new password, please check your mail.`
                         return successResponse(message, { error: true, message: message }, res)
@@ -62,8 +56,8 @@ export class PasswordController {
                     })
                 })
             }else{
-                const message = `User with email ${email} not found.`;
-                return successResponse(message, { error: true }, res)
+                const message = `We couldn't find a user with that email, please try again.`;
+                return successResponse(message, { error: true, message }, res)
             }
         });
     }
@@ -137,7 +131,7 @@ export class PasswordController {
             this.userService.updateUserWithPreSave(userUpdated, (err: any) => {
                 if (err) return mongoError(err, res);
 
-                const message = "Password succesfully updated"
+                const message = "Password succesfully updated 😃✅"
                 return successResponse(message, { error: false, message }, res)
             });
         });

@@ -1,16 +1,10 @@
 import React from "react";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Container,
-  MenuItem,
-  TextField as MUITextfield,
-  Snackbar
-} from "@material-ui/core";
-import axios from "axios";
+import {Button, Card, CardContent, CardHeader, Container, MenuItem, TextField as MUITextfield} from "@material-ui/core";
 import styled from "styled-components";
+import {incidentAPI} from "../api/IncidentAPI";
+import {userAPI} from "../api/UserAPI";
+import {SeverityTypes, Snackbar} from "../components/snackbar/Snackbar";
+import {useHistory} from "react-router-dom";
 
 interface ICreateIncident {}
 
@@ -28,13 +22,6 @@ const incidentTypes = [
     label: "Service"
   }
 ];
-
-// const users = [
-//   {
-//     value: "5f8cc5cae2c69f3a1c7cf99c",
-//     label: "Juan Albergen"
-//   }
-// ];
 
 const priorities = [
   {
@@ -100,15 +87,15 @@ const TextField = styled(MUITextfield)`
 
 export function CreateIncident(props: ICreateIncident) {
   const [subject, setSubject] = React.useState("");
-  const [incidentType, setIncidentType] = React.useState("Software");
+  const [incidentType, setIncidentType] = React.useState(incidentTypes[0].value);
   const [users, setUsers] = React.useState([{label: '', value: ''}])
   const [user, setUser] = React.useState("Juan");
-  const [priority, setPriority] = React.useState("Normal");
+  const [priority, setPriority] = React.useState(priorities[0].value);
   const [deadline, setDeadline] = React.useState("7");
   const [description, setDescription] = React.useState("");
-  const [success, setSuccess] = React.useState(false);
   const [failure, setFailure] = React.useState(false);
   const [formIsValid, setFormIsValid] = React.useState(false);
+  const history = useHistory();
 
   const handleChangeSubject = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSubject(event.target.value);
@@ -148,36 +135,31 @@ export function CreateIncident(props: ICreateIncident) {
       isResolved: "false"
     };
 
-    axios
-      .post(`http://localhost:8080/api/incident`, requestBody)
-      .then(res => {
-        setSuccess(true);
-      })
-      .catch(e => {
-        setFailure(true);
-      });
+    incidentAPI.createIncident(requestBody).then(res => {
+      history.push({pathname: "/", state: {tab: 1, fromOtherPage: true, message: "Incident creation successfull", severity: SeverityTypes.SUCCESS}});
+    }).catch(e => {
+      setFailure(e)
+    })
+
   }
 
-  function getUsers(): void{
-    axios
-        .get(`http://localhost:8080/api/user/all`)
-        .then(res => {
-          const users: {label: string, value: string}[] = []
-          res.data.data.forEach((user: any) => {
-            users.push({
-              label: user.firstName + ' ' + user.lastName,
-              value: user._id
-            })
-          })
-          setUsers(users)
+  function setAllUsers(): void{
+    userAPI.getAllUsers().then(res => {
+      const users: {label: string, value: string}[] = []
+      res.data.data.forEach((user: any) => {
+        users.push({
+          label: user.firstName + ' ' + user.lastName,
+          value: user._id
         })
-        .catch(e => {
-          console.log(e);
-        });
+      })
+      setUsers(users)
+    }).catch(e => {
+      console.log(e)
+    })
   }
 
   React.useEffect(() => {
-      getUsers()
+    setAllUsers()
   }, []);
 
   React.useEffect(() => {
@@ -192,6 +174,7 @@ export function CreateIncident(props: ICreateIncident) {
       deadline) ? true : false;
   }
 
+  // @ts-ignore
   return (
     <Container maxWidth="sm" style={{ marginTop: "96px" }}>
       <Card>
@@ -288,7 +271,7 @@ export function CreateIncident(props: ICreateIncident) {
               <Button
                 color="secondary"
                 variant="outlined"
-                onClick={() => window.history.back()}
+                onClick={() => history.push({pathname: "/", state: {tab: 1}})}
               >
                 CANCEL
               </Button>
@@ -305,10 +288,10 @@ export function CreateIncident(props: ICreateIncident) {
             </ButtonContainer>
           </Form>
         </CardContent>
-        <Snackbar open={success} message="Incident creation successful" />
         <Snackbar
           open={failure}
           message="Incident creation failed, please try again"
+          severity={SeverityTypes.WARNING}
         />
       </Card>
     </Container>

@@ -7,6 +7,8 @@ import styled from "styled-components";
 import {SeverityTypes, Snackbar} from "../components/snackbar/Snackbar";
 import {useLocation} from "react-router-dom";
 
+// TODO: Hmm I want to try something, make this landing page load either <Login/> or <Dashboard/>
+//       and show a sexy "in-between" screen for when the app is deciding where to route the user to.
 interface ILanding {
 }
 
@@ -40,8 +42,8 @@ const Tabs = styled(MUITabs)`
 `;
 
 export function Landing(props: ILanding) {
-    const { state } = useLocation() as { state: { fromLogin: boolean, message: string }};
-    const [value, setValue] = React.useState(0);
+    const { state } = useLocation() as { state: { tab: number, fromOtherPage: boolean, message: string, severity: SeverityTypes }};
+    const [tab, setTab] = React.useState(state ? state.tab : 0 );
     const [snackbar, setSnackbar] = React.useState({
         open: false,
         message: "",
@@ -58,12 +60,12 @@ export function Landing(props: ILanding) {
         if (state) {
             setSnackbar({
                 ...snackbar,
-                open: state.fromLogin,
+                open: state.fromOtherPage,
                 message: state.message,
-                severity: SeverityTypes.SUCCESS,
+                severity: state.severity
             })
 
-            if(state.fromLogin){
+            if(state.fromOtherPage){
                 setTimeout(() =>
                     setSnackbar(prevState => {
                         return {
@@ -77,26 +79,26 @@ export function Landing(props: ILanding) {
     }
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-        setValue(newValue);
+        setTab(newValue);
     };
 
     return (
         <>
-            <Tabs value={value} onChange={handleChange}>
+            <Tabs value={tab} onChange={handleChange}>
                 <Tab label="Dashboard"/>
                 <Tab label="Incident Management"/>
                 <Tab label="User Management"/>
             </Tabs>
 
-            <TabPanel value={value} index={0}>
+            <TabPanel value={tab} index={0}>
                 <Dashboard/>
             </TabPanel>
 
-            <TabPanel value={value} index={1}>
+            <TabPanel value={tab} index={1}>
                 <IncidentManagement/>
             </TabPanel>
 
-            <TabPanel value={value} index={2}>
+            <TabPanel value={tab} index={2}>
                 <UserManagement/>
             </TabPanel>
             <Snackbar {...snackbar} />

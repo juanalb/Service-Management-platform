@@ -16,7 +16,8 @@ export const userColumns: ColDef[] = [
     { field: "lastName", hide: true },
     { field: "name", headerName: "Full Name", width: 180, valueGetter: (params: ValueGetterParams) =>
             `${params.getValue('firstName') || ''} ${params.getValue('lastName') || ''}`,},
-    { field: "location", headerName: "Location", width: 180},
+    { field: "building", headerName: "Building", width: 180},
+    { field: "email", headerName: "Email", width: 180},
     { field: "phoneNumber", headerName: "Phone Number", width: 180},
     { field: "role", headerName: "Role", width: 250},
 ];

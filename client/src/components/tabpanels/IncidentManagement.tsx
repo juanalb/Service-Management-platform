@@ -5,9 +5,9 @@ import {
 } from "@material-ui/core";
 import DataTable from "../datatable/DataTable";
 import { incidentColumns } from "../datatable/DataTable-constants";
-import axios from "axios";
 import AddIcon from "@material-ui/icons/Add";
 import { Link } from "react-router-dom";
+import {incidentAPI} from "../../api/IncidentAPI";
 
 // interface TabPanelProps {
 //   children?: React.ReactNode;
@@ -19,14 +19,11 @@ export default function IncidentManagement() {
   const [incidents, setIncidents] = useState([]);
 
   React.useEffect(() => {
-    axios
-      .get(`http://localhost:8080/api/incident/all`)
-      .then(res => {
-        setIncidents(res.data.data);
+      incidentAPI.getAllIncidents().then(res => {
+          setIncidents(res.data.data)
+      }).catch(e => {
+          console.log(e)
       })
-      .catch(e => {
-        console.log(e);
-      });
   }, []);
 
   return (
