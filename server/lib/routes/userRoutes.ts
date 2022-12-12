@@ -39,6 +39,7 @@ export class UserRoutes {
       res.status(200).send({
         isAuth: true,
         userId: req["user"]._id,
+        role: req["user"].role,
         message: "authorized",
         status: response_status_codes.success
       })

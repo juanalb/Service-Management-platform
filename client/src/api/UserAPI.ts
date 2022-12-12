@@ -27,7 +27,7 @@ function logout(): Promise<AxiosResponse> {
     return axios.post('http://localhost:8080/api/user/logout', {}, defaultConfig)
 }
 
-function isAuthenticated(): Promise<AxiosResponse<{ isAuth: boolean, userId: string}>>{
+function isAuthenticated(): Promise<AxiosResponse<{ isAuth: boolean, userId: string, role: string}>>{
     return axios.post('http://localhost:8080/api/user/auth', {}, defaultConfig)
 }
 

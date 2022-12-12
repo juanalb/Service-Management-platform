@@ -60,7 +60,7 @@ export function LoginForm(){
                 })
                 return;
             }
-            authContext.setContextLogin(res.data.userId, res.data.token);
+            authContext.setContextLogin(res.data.userId, res.data.token, res.data.role);
             history.push({pathname: "/", state: {tab: 0, fromOtherPage: true, message: res.data.message, severity: SeverityTypes.SUCCESS}});
         }).catch(err => {
             console.log(err)

@@ -91,6 +91,7 @@ export class UserController {
                     isAuth: false,
                     message: "You are already logged in",
                     token: user.token,
+                    role: user.role,
                     userId: user._id,
                 });
             } else {
@@ -124,6 +125,7 @@ export class UserController {
                                 }).send({
                                     isAuth: true,
                                     userId: user._id,
+                                    role: user.role,
                                     message: `Login successful, welcome ${user.firstName} ${user.lastName}`,
                                     token: user.token
                             });

@@ -30,7 +30,7 @@ export default function AppBar() {
                 </Link>
                 {authContext.auth ? (
                     <>
-                        <Typography variant={"caption"}>uid: {authContext.userId}</Typography>
+                        <Typography variant={"caption"}>Role: {authContext.role}</Typography>
                         <Button color="inherit" onClick={() => handleLogoutClick()}>Logout</Button>
                     </>
                 ) : (

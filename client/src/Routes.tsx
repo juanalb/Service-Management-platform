@@ -30,21 +30,25 @@ export function Routes() {
                     </Login>
                 </Route>
 
-                <ProtectedRoute path={"/create-incident"} component={<CreateIncident/>}/>
-                <ProtectedRoute path={"/create-user"} component={<CreateUser/>}/>
+                <ProtectedRoute path={"/create-incident"} component={<CreateIncident/>} grantedRoles={["Service Desk employee", "Regular employee"]}/>
+                <ProtectedRoute path={"/create-user"} component={<CreateUser/>} grantedRoles={["Service Desk employee"]}/>
                 {/* TODO: Refactor to /dashboard */}
-                <ProtectedRoute path={"/"} component={<Landing/>}/>
+                <ProtectedRoute path={"/"} component={<Landing/>} grantedRoles={["Service Desk employee", "Regular employee"]}/>
             </Switch>
         </>
     );
 }
 
-export function ProtectedRoute({path, component}: { path: string, component: ReactNode }) {
+export function ProtectedRoute({path, component, grantedRoles}: { path: string, component: ReactNode, grantedRoles: string[] }) {
     const authContext = useContext(AuthContext);
 
-    return (
-        <Route path={path}>
-            {authContext.auth ? component : <Redirect to="/login"/>}
-        </Route>
-    );
+    if(!authContext.auth){
+        return <Redirect to="/login"/>;
+    } else {
+        return (
+            <Route path={path}>
+                {grantedRoles.includes(authContext.role) ? component : <div>No access with role: ${authContext.role}</div>}
+            </Route>
+        );
+    }
 }

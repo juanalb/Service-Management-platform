@@ -9,25 +9,29 @@ import { userAPI } from "./api/UserAPI";
 export function App() {
     const [auth, setAuth] = useState(false);
     const [userId, setUserId] = useState<string>("");
+    const [role, setRole] = useState<string>("");
 
     React.useEffect(() => {
         userAPI.isAuthenticated().then((res) => {
             setAuth(res.data.isAuth)
             setUserId(res.data.userId)
+            setRole(res.data.role)
         })
     }, []);
 
-    const setContextLogin = useCallback((userId, token, expirationDate) => {
+    const setContextLogin = useCallback((userId, token, role, expirationDate) => {
         sessionStorage.setItem(
             'user',
             JSON.stringify({
                 id: userId,
                 isAuth: true,
+                role,
             })
         );
 
         setAuth(true);
         setUserId(userId);
+        setRole(role);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         axios.defaults.headers.common['x-access-token'] = `${token}`;
     }, []);
@@ -35,6 +39,7 @@ export function App() {
     const setContextLogout = useCallback(() => {
         setAuth(false)
         setUserId("");
+        setRole("");
         sessionStorage.removeItem('user');
         axios.defaults.headers.common['Authorization'] = `Bearer `;
         axios.defaults.headers.common['x-access-token'] = ``;
@@ -45,6 +50,7 @@ export function App() {
             value={{
                 auth: auth,
                 userId: userId,
+                role: role,
                 setContextLogin: setContextLogin,
                 setContextLogout: setContextLogout
             }}
