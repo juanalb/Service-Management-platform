@@ -1,39 +1,34 @@
-User1: Service Desk Employee
-User2: End User 
-Users: Collection of User1 and User2
+Actor 1: Employee
+Actor 2: Client
 
 ======LOGIN=======
-[x] Users can login
-[] Users can remember his password
-[] Users forget it's password
+[x] Employee and Client can login
+[] Employee and Client can remember their password
+[] Employee and Client can forget their password (email with password recovery sent)
 
 
 ======TICKETS=======
-DASHBOARD STATISTICS
-[x] Users can see unresolved incidents
-[x] Users can see incidents past deadlines
+DASHBOARD STATISTICS (Employee only)
+[x] Employee can see all unresolved incidents
+[x] Employee can see incidents past deadlines
 
 TICKET OVERVIEW
-[x] Users can see a list of all tickets
-[] Users? can create a new ticket
-[] Users can filter by email to search for tickets
-[x] Users can sort the table by all the table headers
+[x] Employee can see a list of all tickets
+[] Client can see a list of all their tickets
+[] Employee and Client can create a new ticket
+[] Employee can filter by email to search for tickets
+[x] Employee and Client can sort the table by all the table headers
 
 CREATE INCIDENT
-[] Users? can create a new ticket and get's added to the DB
+[] Employee and Client can create a new ticket and get's added to the DB
 
 ======USERS=======
-USERS OVERVIEW
-[] User1 can see a list of all users
-[] User1 can create a new users
-[] User1 can filter by email to search for users
-[] User1 can sort the table by all the table headers
+USERS OVERVIEW (Employee only)
+[] Employee can see a list of all users
+[] Employee can create a new users
+[] Employee can filter by email to search for users
+[] Employee can sort the table by all the table headers
 
 ADD USERS
-[] User1 can create a new user and add it to DB
-[] User1 can send a password to the email
-
-
-Questions:
-1. Kunnen alleen eindgebruikers/sd employees tickets aan maken? 
-2. Hoe ziet de "user management" voor een eindgebruiker eruit >> inzichten in eigen gegevens
+[x] Employee can create a new user and add it to DB
+[] Employee can send a password to the email
