@@ -16,7 +16,6 @@ export default function Dashboard() {
     React.useEffect(() => {
         axios.all([incidentAPI.getAllIncidents(), incidentAPI.getAllUnsresolvedIncidents(), incidentAPI.getIncidentsPastDeadline()]).then(
             axios.spread(function(incidentResponse, unResolvedResponse, pastDeadlineResponse) {
-                console.log(incidentResponse)
                 setTotal(incidentResponse.data.data.length);
                 setUnResolved(unResolvedResponse.data.data.length);
                 setIncidentsPastDeadline(pastDeadlineResponse.data.data.length);

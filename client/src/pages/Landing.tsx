@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {Box, Tab, Tabs as MUITabs} from "@material-ui/core";
 import Dashboard from "../components/tabpanels/Dashboard";
 import IncidentManagement from "../components/tabpanels/IncidentManagement";
@@ -6,6 +6,7 @@ import UserManagement from "../components/tabpanels/UserManagement";
 import styled from "styled-components";
 import {SeverityTypes, Snackbar} from "../components/snackbar/Snackbar";
 import {useLocation} from "react-router-dom";
+import {AuthContext} from "../context/AuthContext";
 
 // TODO: Hmm I want to try something, make this landing page load either <Login/> or <Dashboard/>
 //       and show a sexy "in-between" screen for when the app is deciding where to route the user to.
@@ -42,6 +43,7 @@ const Tabs = styled(MUITabs)`
 `;
 
 export function Landing(props: ILanding) {
+    const { role } = useContext(AuthContext);
     const { state } = useLocation() as { state: { tab: number, fromOtherPage: boolean, message: string, severity: SeverityTypes }};
     const [tab, setTab] = React.useState(state ? state.tab : 0 );
     const [snackbar, setSnackbar] = React.useState({
@@ -85,17 +87,16 @@ export function Landing(props: ILanding) {
     return (
         <>
             <Tabs value={tab} onChange={handleChange}>
-                <Tab label="Dashboard"/>
+                { role === 'Service Desk employee' && <Tab label="Dashoard"/> }
                 <Tab label="Incident Management"/>
-                <Tab label="User Management"/>
+                { role === 'Service Desk employee' && <Tab label="User Management"/> }
             </Tabs>
-
             <TabPanel value={tab} index={0}>
-                <Dashboard/>
+                <IncidentManagement/>
             </TabPanel>
 
             <TabPanel value={tab} index={1}>
-                <IncidentManagement/>
+                <Dashboard/>
             </TabPanel>
 
             <TabPanel value={tab} index={2}>
