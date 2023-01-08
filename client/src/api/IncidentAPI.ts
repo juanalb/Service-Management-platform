@@ -4,6 +4,7 @@ export const incidentAPI = {
     getAllIncidents,
     getAllUnsresolvedIncidents,
     getIncidentsPastDeadline,
+    getAllIncidentsByUserId,
     createIncident
 }
 
@@ -16,6 +17,10 @@ let defaultConfig = {
 
 function getAllIncidents() {
     return axios.get("http://localhost:8080/api/incident/all", defaultConfig);
+}
+
+function getAllIncidentsByUserId(userId: string) {
+    return axios.get(`http://localhost:8080/api/users/${userId}/incidents`, defaultConfig);
 }
 
 function getAllUnsresolvedIncidents() {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import {
   Container,
   Button,
@@ -8,22 +8,28 @@ import { incidentColumns } from "../datatable/DataTable-constants";
 import AddIcon from "@material-ui/icons/Add";
 import { Link } from "react-router-dom";
 import {incidentAPI} from "../../api/IncidentAPI";
+import {AuthContext} from "../../context/AuthContext";
 
-// interface TabPanelProps {
-//   children?: React.ReactNode;
-//   index: any;
-//   value: any;
-// }
 
 export default function IncidentManagement() {
   const [incidents, setIncidents] = useState([]);
+  const { role, userId } = useContext(AuthContext);
 
-  React.useEffect(() => {
-      incidentAPI.getAllIncidents().then(res => {
-          setIncidents(res.data.data)
-      }).catch(e => {
-          console.log(e)
-      })
+    React.useEffect(() => {
+      if(role === 'Service Desk Employee') {
+          incidentAPI.getAllIncidents().then(res => {
+              setIncidents(res.data.data)
+          }).catch(e => {
+              console.log(e)
+          })
+      } else if(role === 'Regular employee'){
+          incidentAPI.getAllIncidentsByUserId(userId).then(res => {
+              setIncidents(res.data.data)
+          }).catch(e => {
+              console.log(e)
+          })
+      }
+
   }, []);
 
   return (

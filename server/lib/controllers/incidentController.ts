@@ -88,6 +88,25 @@ export class IncidentController {
     }
   }
 
+  public getByUserId(req: Request, res: Response) {
+    if (req.params.id) {
+      const incident_filter = { reportedBy: req.params.id };
+      this.incidentService.getAllIncidents(
+          incident_filter,
+          (err: any, incident_data: IIncident) => {
+            if (err) {
+              mongoError(err, res);
+            } else {
+              successResponse("get incident successfull", incident_data, res);
+            }
+          }
+      );
+    } else {
+      insufficientParameters(res);
+    }
+  }
+
+
   public update(req: Request, res: Response) {
     if (
       (req.params.id && req.body.reportDate) ||

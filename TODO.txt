@@ -1,5 +1,3 @@
-Actor 1: Employee
-Actor 2: Client
 
 ======LOGIN=======
 [x] Employee and Client can login
@@ -14,18 +12,18 @@ DASHBOARD STATISTICS (Employee only)
 
 TICKET OVERVIEW
 [x] Employee can see a list of all tickets
-[] Client can see a list of all their tickets
-[] Employee and Client can create a new ticket
+[x] Client can see a list of all their tickets
+[x] Employee and Client can create a new ticket
 [] Employee can filter by email to search for tickets
-[x] Employee and Client can sort the table by all the table headers
+[] Employee and Client can sort the table by all the table headers
 
 CREATE INCIDENT
-[] Employee and Client can create a new ticket and get's added to the DB
+[X] Employee and Client can create a new ticket and get's added to the DB
 
 ======USERS=======
 USERS OVERVIEW (Employee only)
-[] Employee can see a list of all users
-[] Employee can create a new users
+[x] Employee can see a list of all users
+[x] Employee can create a new users
 [] Employee can filter by email to search for users
 [] Employee can sort the table by all the table headers
 

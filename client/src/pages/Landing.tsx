@@ -87,8 +87,8 @@ export function Landing(props: ILanding) {
     return (
         <>
             <Tabs value={tab} onChange={handleChange}>
-                { role === 'Service Desk employee' && <Tab label="Dashoard"/> }
                 <Tab label="Incident Management"/>
+                { role === 'Service Desk employee' && <Tab label="Dashoard"/> }
                 { role === 'Service Desk employee' && <Tab label="User Management"/> }
             </Tabs>
             <TabPanel value={tab} index={0}>

@@ -18,6 +18,10 @@ export class IncidentRoutes {
       this.incidentController.getById(req, res);
     });
 
+    app.get("/api/users/:id/incidents", auth, (req: Request, res: Response) => {
+      this.incidentController.getByUserId(req, res);
+    });
+
     app.put("/api/incident/:id", auth,(req: Request, res: Response) => {
       this.incidentController.update(req, res);
     });

@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useContext} from "react";
 import {Button, Card, CardContent, CardHeader, Container, MenuItem, TextField as MUITextfield} from "@material-ui/core";
 import styled from "styled-components";
 import {incidentAPI} from "../api/IncidentAPI";
 import {userAPI} from "../api/UserAPI";
 import {SeverityTypes, Snackbar} from "../components/snackbar/Snackbar";
 import {useHistory} from "react-router-dom";
+import {AuthContext} from "../context/AuthContext";
 
 interface ICreateIncident {}
 
@@ -86,10 +87,11 @@ const TextField = styled(MUITextfield)`
 `;
 
 export function CreateIncident(props: ICreateIncident) {
+  const { role, userId } = useContext(AuthContext);
   const [subject, setSubject] = React.useState("");
   const [incidentType, setIncidentType] = React.useState(incidentTypes[0].value);
   const [users, setUsers] = React.useState([{label: '', value: ''}])
-  const [user, setUser] = React.useState("Juan");
+  const [user, setUser] = React.useState(role === 'Service Desk employee' ? "" : userId );
   const [priority, setPriority] = React.useState(priorities[0].value);
   const [deadline, setDeadline] = React.useState("7");
   const [description, setDescription] = React.useState("");
@@ -210,20 +212,21 @@ export function CreateIncident(props: ICreateIncident) {
             </TextField>
 
             {/* REPORTED BY USER*/}
-            <TextField
-              id="user"
-              select
-              required
-              label="Reported by user"
-              value={user}
-              onChange={handleChangeUser}
+            {role === 'Service Desk employee' && (
+                <TextField
+                id="user"
+                select
+                required
+                label="Reported by user"
+                value={user}
+                onChange={handleChangeUser}
             >
               {users.map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
               ))}
-            </TextField>
+            </TextField>)}
 
             {/* PRIORITY*/}
             <TextField
