@@ -1,8 +1,8 @@
 
 ======LOGIN=======
 [x] Employee and Client can login
-[] Employee and Client can remember their password
-[] Employee and Client can forget their password (email with password recovery sent)
+[x] Employee and Client can remember their password
+[x] Employee and Client can forget their password (email with password recovery sent)
 
 
 ======TICKETS=======
