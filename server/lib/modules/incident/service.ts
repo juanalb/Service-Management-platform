@@ -8,7 +8,7 @@ export default class IncidentService {
   }
 
   public getAllIncidents(query: any, callback: any) {
-    incident.find(query, callback);
+    incident.find(query, callback).populate('reportedBy');
   }
 
   public getIncident(query: any, callback: any) {

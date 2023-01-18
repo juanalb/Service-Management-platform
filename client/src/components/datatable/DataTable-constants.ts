@@ -2,12 +2,14 @@ import {ColDef, ValueGetterParams} from "@material-ui/data-grid";
 
 export const incidentColumns: ColDef[] = [
     { field: "_id", hide: true },
-    { field: "subject", headerName: "Subject", width: 500},
+    { field: "subject", headerName: "Subject", width: 250},
     { field: "type", headerName: "Incident Type", width: 130},
     { field: "reportDate", headerName: "Report Date", width: 180},
     { field: "deadline", headerName: "Due Date"},
     { field: "priority", headerName: "Priority"},
-    { field: "isResolved", headerName: "Resolved"}
+    { field: "isResolved", headerName: "Resolved" },
+    // @ts-ignore
+    { field: "reportedBy", headerName: "Reported by", valueGetter: (row) => row.value?.fullName}
 ];
 
 export const userColumns: ColDef[] = [
