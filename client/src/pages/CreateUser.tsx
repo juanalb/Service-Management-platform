@@ -38,12 +38,12 @@ const buildings = [
 
 const roles = [
     {
-        value: "Service Desk employee",
-        label: "Service Desk employee"
+        value: "Service Desk Employee",
+        label: "Service Desk Employee"
     },
     {
-        value: "Regular employee",
-        label: "Regular employee"
+        value: "Regular Employee",
+        label: "Regular Employee"
     }
 ];
 

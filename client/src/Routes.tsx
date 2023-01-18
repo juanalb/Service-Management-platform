@@ -30,10 +30,10 @@ export function Routes() {
                     </Login>
                 </Route>
 
-                <ProtectedRoute path={"/create-incident"} component={<CreateIncident/>} grantedRoles={["Service Desk employee", "Regular employee"]}/>
-                <ProtectedRoute path={"/create-user"} component={<CreateUser/>} grantedRoles={["Service Desk employee"]}/>
+                <ProtectedRoute path={"/create-incident"} component={<CreateIncident/>} grantedRoles={["Service Desk Employee", "Regular Employee"]}/>
+                <ProtectedRoute path={"/create-user"} component={<CreateUser/>} grantedRoles={["Service Desk Employee"]}/>
                 {/* TODO: Refactor to /dashboard */}
-                <ProtectedRoute path={"/"} component={<Landing/>} grantedRoles={["Service Desk employee", "Regular employee"]}/>
+                <ProtectedRoute path={"/"} component={<Landing/>} grantedRoles={["Service Desk Employee", "Regular Employee"]}/>
             </Switch>
         </>
     );

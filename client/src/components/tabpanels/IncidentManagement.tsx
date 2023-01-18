@@ -22,7 +22,7 @@ export default function IncidentManagement() {
           }).catch(e => {
               console.log(e)
           })
-      } else if(role === 'Regular employee'){
+      } else if(role === 'Regular Employee'){
           incidentAPI.getAllIncidentsByUserId(userId).then(res => {
               setIncidents(res.data.data)
           }).catch(e => {

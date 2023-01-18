@@ -19,4 +19,4 @@ IncidentSchema.set("toJSON", {
   virtuals: true
 });
 
-export default mongoose.model("Incidents", IncidentSchema);
+export default mongoose.model("Incident", IncidentSchema);

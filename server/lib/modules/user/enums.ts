@@ -6,6 +6,6 @@ export enum Building {
 }
 
 export enum Role {
-    SERVICE_DESK = "Service Desk employee",
-    REGULAR = "Regular employee"
+    SERVICE_DESK = "Service Desk Employee",
+    REGULAR = "Regular Employee"
 }
