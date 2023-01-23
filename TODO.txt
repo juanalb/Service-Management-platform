@@ -15,7 +15,7 @@ TICKET OVERVIEW
 [x] Client can see a list of all their tickets
 [x] Employee and Client can create a new ticket
 [x] Employee can filter by email to search for tickets
-[] Employee and Client can sort the table by all the table headers
+[x] Employee and Client can sort the table by all the table headers
 
 CREATE INCIDENT
 [X] Employee and Client can create a new ticket and get's added to the DB
@@ -25,7 +25,8 @@ USERS OVERVIEW (Employee only)
 [x] Employee can see a list of all users
 [x] Employee can create a new users
 [x] Employee can filter by email to search for users
-[] Employee can sort the table by all the table headers
+[x] Employee can sort the table by all the table headers
+
 
 ADD USERS
 [x] Employee can create a new user and add it to DB

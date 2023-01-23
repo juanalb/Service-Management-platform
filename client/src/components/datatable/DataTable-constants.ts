@@ -8,10 +8,18 @@ export const incidentColumns: ColDef[] = [
     { field: "deadline", headerName: "Due Date"},
     { field: "priority", headerName: "Priority"},
     { field: "isResolved", headerName: "Resolved" },
-    // @ts-ignore
-    { field: "reportedBy", headerName: "Reported by", valueGetter: (row) => row.value?.fullName},
-    // @ts-ignore
-    { field: "reportedBy", headerName: "E-mail", valueGetter: (row) => row.value?.email},
+    { field: "reportedBy",
+        headerName: "Reported by",
+        sortComparator: (a, b) => {
+            // @ts-ignore
+            if (a.email.toLowerCase() > b.email.toLowerCase()) return 1;
+            // @ts-ignore
+            if (a.email.toLowerCase() < b.email.toLowerCase()) return -1;
+            return 0;
+        },
+        // @ts-ignore
+        valueGetter: (row) => row.value?.email
+    },
 ];
 
 export const userColumns: ColDef[] = [
