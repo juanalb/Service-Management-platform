@@ -24,7 +24,7 @@ CREATE INCIDENT
 USERS OVERVIEW (Employee only)
 [x] Employee can see a list of all users
 [x] Employee can create a new users
-[] Employee can filter by email to search for users
+[x] Employee can filter by email to search for users
 [] Employee can sort the table by all the table headers
 
 ADD USERS
