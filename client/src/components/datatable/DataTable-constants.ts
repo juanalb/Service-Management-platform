@@ -9,7 +9,9 @@ export const incidentColumns: ColDef[] = [
     { field: "priority", headerName: "Priority"},
     { field: "isResolved", headerName: "Resolved" },
     // @ts-ignore
-    { field: "reportedBy", headerName: "Reported by", valueGetter: (row) => row.value?.fullName}
+    { field: "reportedBy", headerName: "Reported by", valueGetter: (row) => row.value?.fullName},
+    // @ts-ignore
+    { field: "reportedBy", headerName: "E-mail", valueGetter: (row) => row.value?.email},
 ];
 
 export const userColumns: ColDef[] = [
