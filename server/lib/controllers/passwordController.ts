@@ -38,11 +38,11 @@ export class PasswordController {
                 crypto.randomBytes(32, (err, buffer) => {
                     if (err) return mongoError(err, res);
                     const token = buffer.toString('hex');
-                    const diff = 30 // difference in minutes
+                    const thirtyMinutesFromNow = new Date(new Date().getTime() + 30 * 60000) // difference in minutes
 
                     const userUpdated = user;
                     userUpdated.resetPasswordToken = token;
-                    userUpdated.resetPasswordExpires = new Date(new Date().getTime() + diff * 60000);
+                    userUpdated.resetPasswordExpires = thirtyMinutesFromNow;
 
                     this.userService.updateUser(userUpdated, (err, userDocument) => {
                         if(err) return mongoError(err, res);
