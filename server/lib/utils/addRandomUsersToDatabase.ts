@@ -8,7 +8,7 @@ export function addRandomUsersToDatabase(n: number){
     const userService = new UserService();
 
     for (let i = 0; i < n; i++) {
-        const user = addRandomUsersToDatabase();
+        const user = createRandomUser();
         userService.createUser(user, (err: any, user: IUser) => {
             console.log('created fake user: ', user)
             console.log('error: ', err)
@@ -17,7 +17,7 @@ export function addRandomUsersToDatabase(n: number){
     }
 }
 
-function addRandomUsersToDatabase(): IUser {
+function createRandomUser(): IUser {
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
 
